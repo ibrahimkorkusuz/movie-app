@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Movie } from '../models/movie';
 import { MovieRepository } from '../models/movie.repository';
+import { AlertifyService } from '../services/alertify.services';
+
 
 @Component({
   selector: 'app-movies',
@@ -13,20 +15,38 @@ export class MoviesComponent implements OnInit {
   movies: Movie[];
   popularMovies: Movie[];
   movieRepository: MovieRepository;
+  filteredMovies: Movie[];
   today = new Date();
   filterText: string= "";
 
-  constructor() {
+  constructor(private alertify: AlertifyService) {
     this.movieRepository = new MovieRepository();
     this.movies = this.movieRepository.getMovies();
     this.popularMovies = this.movieRepository.getPopularMovies();
+    this.filteredMovies = this.movies;
    }
 
   ngOnInit(): void {
   }
 
-  // movies = ["film 1", "film 2", "film 3"]
+  onInputChange(){
+    this.filteredMovies = this.filterText?
+    this.movies.filter(m=>m.title.indexOf(this.filterText) !== -1 || m.description.indexOf(this.filterText) !== -1): this.movies;
+  }
 
- 
+  addToList($event: any, movie: Movie){
+    if($event.target.classList.contains('btn-primary')){
+      $event.target.innerText = "List Remove"
+      $event.target.classList.remove('btn-primary');
+      $event.target.classList.add('btn-danger');
 
+      this.alertify.success(movie.title + ' List Added');
+    } else {
+      $event.target.innerText = "List Add"
+      $event.target.classList.remove('btn-danger');
+      $event.target.classList.add('btn-primary');
+
+      this.alertify.error(movie.title + ' List Removed')
+    }
+  }
 }

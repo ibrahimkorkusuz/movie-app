@@ -2,11 +2,16 @@
     <h1>{{ title }}</h1>
 
     <div class="alert alert-warning" *ngIf="movies.length>0">
-        {{ movies.length }} film bulundu
+        {{ filteredMovies.length }} film bulundu
     </div>
 
     <div class="mb-3">
-        <input [(ngModel)]="filterText"type="text" class="form-control" placeholder="Search">
+        <input
+        [(ngModel)]="filterText"
+        type="text" 
+        class="form-control" 
+        (ngModelChange) = "onInputChange()" 
+        placeholder="Search">
         <small class="text-muted" *ngIf="filterText">Aradığınız kelime: {{filterText}} </small>
     </div>
 
@@ -33,7 +38,10 @@
                     <h2 class="card-title"> {{ item.title | titlecase }} </h2>
                     <p class="card-text">{{ item.description | summary: 30 }}</p>
                     <p class="card-text">{{ item.datePublished | date: 'dd/MM/y' }}</p>
-                    <button class="btn btn-sm btn-outline-primary">Details</button>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary">Details</button>
+                        <button (click)="addToList($event, item)" class="btn btn-sm btn-primary ms-1">List Add</button>
+                    </div>
                 </div>
             </div>
         </div>
