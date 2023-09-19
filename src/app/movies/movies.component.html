@@ -1,85 +1,48 @@
+
 <div *ngIf="movies.length>0; else no_movies">
-    <h1>{{ title }}</h1>
+  <h1>{{ title }}</h1>
 
-    <div class="alert alert-warning" *ngIf="movies.length>0">
-        {{ filteredMovies.length }} film bulundu
-    </div>
+  <div class="alert alert-warning" *ngIf="movies.length>0">
+    {{ FilteredMovies.length }} film bulundu.
+  </div>
 
-    <div class="mb-3">
-        <input
-        [(ngModel)]="filterText"
-        type="text" 
-        class="form-control" 
-        (ngModelChange) = "onInputChange()" 
-        placeholder="Search">
-        <small class="text-muted" *ngIf="filterText">Aradığınız kelime: {{filterText}} </small>
-    </div>
+  <div class="mb-3">
+    <input type="text"
+      class="form-control"
+      [(ngModel)]="filterText"
+      (ngModelChange)="onInputChange()"
+      placeholder="Search...">
+    <small class="text-muted" *ngIf="filterText">Aradığınız kelime: {{ filterText }}</small>
+  </div>
 
-    
-    <!-- <ng-template [ngTemplateOutlet]="movieList2" [ngTemplateOutletContext]="{ movies: popularMovies }"></ng-template> -->
-    <ng-template [ngTemplateOutlet]="movieList1"></ng-template>
+  <ng-template [ngTemplateOutlet]="movieList1"></ng-template>
+
 </div>
 
-<ng-template class="alert alert-warning" #no_movies>
-    <div class="alert alert-warning">
-        Film bulunamadı
-    </div>
+<ng-template #no_movies>
+  <div class="alert alert-warning" >
+    Film bulunamadı.
+  </div>
 </ng-template>
 
 
 <ng-template #movieList1>
-    <div class="card mb-3" *ngFor="let item of movies | movieFilter: filterText">
-        <div class="row">
-            <div class="col-md-3">
-                <img src="assets/img/{{ item.imageUrl }}" class="img-fluid rounded-start" alt="">
-            </div>
-            <div class="col-md-9">
-                <div class="card-body">
-                    <h2 class="card-title"> {{ item.title | titlecase }} </h2>
-                    <p class="card-text">{{ item.description | summary: 30 }}</p>
-                    <p class="card-text">{{ item.datePublished | date: 'dd/MM/y' }}</p>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary">Details</button>
-                        <button (click)="addToList($event, item)" class="btn btn-sm btn-primary ms-1">List Add</button>
-                    </div>
-                </div>
-            </div>
+  <div class="card mb-3" *ngFor="let item of FilteredMovies">
+    <div class="row">
+      <div class="col-md-3">
+        <img src="/assets/img/{{ item.imageUrl }}" class="img-fluid rounded-start" alt="">
+      </div>
+      <div class="col-md-9">
+        <div class="card-body">
+          <h2 class="card-title">{{ item.title | titlecase }}</h2>
+          <p class="card-text">{{ item.description | summary: 30 }}</p>
+          <!-- <p class="card-text">{{ item.datePublished | date: 'dd/MM/y' }}</p> -->
+          <div>
+            <button class="btn btn-sm btn-outline-primary">Details</button>
+            <button (click)="addToList($event,item)" class="btn btn-sm btn-primary ms-1">Listeye Ekle</button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </ng-template>
-
-<ng-template #movieList2 let-populerFilmler="movies">
-    <h2>Popüler Filmler</h2>
-    <div class="row row-col-1 row-cols-md-3 g-4 mb-3">
-        <div class="col" *ngFor="let item of populerFilmler">
-            <div class="card">
-                <img src="/assets/img/{{item.imageUrl}}" alt="text" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">{{item.title}}</h5>
-                    <p class="card-text">{{item.description}}</p>
-                    <button class="btn btn-sm btn-outline-primary">Details</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-
-<h3>lower-upper-title pipe</h3>
-<p>{{'IPhone 15 PRO'}}</p>
-<p>{{'IPhone 15 PRO' | lowercase}}</p>
-<p>{{'IPhone 15 PRO' | uppercase}}</p>
-<p>{{'IPhone 15 PRO' | titlecase}}</p>
-
-<br><br>
-
-<h4>Date pipe</h4>
-<p>{{today}}</p>
-<p>{{today | date}}</p>
-<p>{{today | date: 'fullDate'}}</p>
-<p>{{today | date: 'medium'}}</p>
-<p>{{today | date: 'shortTime'}}</p>
-<p>{{today | date: 'h:mm:ss'}}</p>
-
-<br><br>
-

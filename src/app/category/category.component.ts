@@ -13,7 +13,7 @@ export class CategoryComponent implements OnInit {
   categoryRepository: CategoryRepository;
   selectedCategory: Category = null;
 
-  constructor() { 
+  constructor() {
     this.categoryRepository = new CategoryRepository();
     this.categories = this.categoryRepository.getCategories();
   }
@@ -24,7 +24,7 @@ export class CategoryComponent implements OnInit {
   displayAll = true;
 
   selectCategory(item?: Category) {
-    if(item){
+    if(item) {
       this.selectedCategory = item;
       this.displayAll = false;
     } else {
@@ -32,4 +32,5 @@ export class CategoryComponent implements OnInit {
       this.displayAll = true;
     }
   }
+
 }

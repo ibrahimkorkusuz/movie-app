@@ -1,12 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "156c4bd3-e029-4d41-bff6-08fd5b6653ea"
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Movie-App": {
+    "movieapp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -23,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Movie-App",
+            "outputPath": "dist/movieapp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -77,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Movie-App:build:production"
+              "browserTarget": "movieapp:build:production"
             },
             "development": {
-              "browserTarget": "Movie-App:build:development"
+              "browserTarget": "movieapp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Movie-App:build"
+            "browserTarget": "movieapp:build"
           }
         },
         "test": {
@@ -111,5 +108,5 @@
       }
     }
   },
-  "defaultProject": "Movie-App"
+  "defaultProject": "movieapp"
 }

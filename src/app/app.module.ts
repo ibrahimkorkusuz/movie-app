@@ -11,10 +11,11 @@ import { FooterComponent } from './footer/footer.component';
 import { SummaryPipe } from './pipes/summary.pipe';
 import { FormsModule } from '@angular/forms';
 import { MovieFilterPipe } from './pipes/movie-filter.pipe';
-import { AlertifyService } from './services/alertify.services';
+import { AlertifyService } from './services/alertify.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
+  declarations: [   // component
     AppComponent,
     NavbarComponent,
     CategoryComponent,
@@ -25,13 +26,14 @@ import { AlertifyService } from './services/alertify.services';
     SummaryPipe,
     MovieFilterPipe
   ],
-  imports: [
+  imports: [        // module
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     AlertifyService
-  ],
-  bootstrap: [AppComponent]
+  ],    // services
+  bootstrap: [AppComponent] // starter component
 })
 export class AppModule { }

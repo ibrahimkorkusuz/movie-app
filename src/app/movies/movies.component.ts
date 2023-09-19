@@ -1,8 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Movie } from '../models/movie';
 import { MovieRepository } from '../models/movie.repository';
-import { AlertifyService } from '../services/alertify.services';
-
+import { AlertifyService } from '../services/alertify.service';
 
 @Component({
   selector: 'app-movies',
@@ -12,41 +12,55 @@ import { AlertifyService } from '../services/alertify.services';
 export class MoviesComponent implements OnInit {
 
   title = "Film Listesi";
-  movies: Movie[];
-  popularMovies: Movie[];
-  movieRepository: MovieRepository;
-  filteredMovies: Movie[];
-  today = new Date();
-  filterText: string= "";
+  movies: Movie[] = [];
+  FilteredMovies: Movie[] = [];
 
-  constructor(private alertify: AlertifyService) {
-    this.movieRepository = new MovieRepository();
-    this.movies = this.movieRepository.getMovies();
-    this.popularMovies = this.movieRepository.getPopularMovies();
-    this.filteredMovies = this.movies;
-   }
+  filterText: string = "";
+
+  constructor(private alertify: AlertifyService,
+              private http: HttpClient) {
+  }
 
   ngOnInit(): void {
+    this.http.get<Movie[]>("http://localhost:3000/movies").subscribe(data => {
+      this.movies = data;
+      this.FilteredMovies = this.movies;
+
+      console.log(this.movies);
+      console.log(this.FilteredMovies);
+    });
+
+    this.http.get("https://jsonplaceholder.typicode.com/users").subscribe(data => {
+      console.log(data);
+    })
+
+
   }
 
-  onInputChange(){
-    this.filteredMovies = this.filterText?
-    this.movies.filter(m=>m.title.indexOf(this.filterText) !== -1 || m.description.indexOf(this.filterText) !== -1): this.movies;
+  onInputChange() {
+    this.FilteredMovies = this.filterText?
+      this.movies.filter(m=> m.title.indexOf(this.filterText) !== -1 ||
+                         m.description.indexOf(this.filterText) !== -1): this.movies
   }
 
-  addToList($event: any, movie: Movie){
-    if($event.target.classList.contains('btn-primary')){
-      $event.target.innerText = "List Remove"
+  addToList($event: any, movie: Movie) {
+    if($event.target.classList.contains('btn-primary')) {
+      $event.target.innerText = "Listeden Çıkar";
       $event.target.classList.remove('btn-primary');
       $event.target.classList.add('btn-danger');
 
-      this.alertify.success(movie.title + ' List Added');
+      this.alertify.success(movie.title + ' listene eklendi');
     } else {
-      $event.target.innerText = "List Add"
+      $event.target.innerText = "Listeye Ekle";
       $event.target.classList.remove('btn-danger');
       $event.target.classList.add('btn-primary');
 
-      this.alertify.error(movie.title + ' List Removed')
+      this.alertify.error(movie.title + ' listeden çıkarıldı.')
     }
   }
+
+
+
+
+
 }
