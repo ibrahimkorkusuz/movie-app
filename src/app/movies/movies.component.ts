@@ -1,13 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Movie } from '../models/movie';
-import { MovieRepository } from '../models/movie.repository';
 import { AlertifyService } from '../services/alertify.service';
+import { MovieService } from '../services/movie.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-movies',
   templateUrl: './movies.component.html',
-  styleUrls: ['./movies.component.css']
+  styleUrls: ['./movies.component.css'],
+  providers: [MovieService]
 })
 export class MoviesComponent implements OnInit {
 
@@ -16,25 +17,24 @@ export class MoviesComponent implements OnInit {
   FilteredMovies: Movie[] = [];
 
   filterText: string = "";
+  error: any;
 
-  constructor(private alertify: AlertifyService,
-              private http: HttpClient) {
+  constructor(
+    private alertify: AlertifyService,
+    private movieService: MovieService,
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.http.get<Movie[]>("http://localhost:3000/movies").subscribe(data => {
-      this.movies = data;
-      this.FilteredMovies = this.movies;
-
-      console.log(this.movies);
-      console.log(this.FilteredMovies);
+    this.activatedRoute.params.subscribe(params => {
+      this.movieService.getMovies(params["categoryId"]).subscribe(data => {
+        this.movies = data;
+        this.FilteredMovies = this.movies;
+      }, error => {
+        this.error = error;
+        console.log(this.error);
+      });
     });
-
-    this.http.get("https://jsonplaceholder.typicode.com/users").subscribe(data => {
-      console.log(data);
-    })
-
-
   }
 
   onInputChange() {
